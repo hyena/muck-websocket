@@ -29,20 +29,20 @@ func openTelnet() (t *telnet.Telnet, err error) {
 }
 
 func telnetProxy(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
-		http.Error(w, "Not found", 404)
-		return
-	}
-	if r.Method != "GET" {
-		http.Error(w, "Method not allowed", 405)
-		return
-	}
-	c, err := upgrader.Upgrade(w, r, nil)
-	if err != nil {
+    if r.URL.Path != "/" {
+        http.Error(w, "Not found", 404)
+        return
+    }
+    if r.Method != "GET" {
+        http.Error(w, "Method not allowed", 405)
+        return
+    }
+    c, err := upgrader.Upgrade(w, r, nil)
+    if err != nil {
         http.Error(w, "Error creating websocket", 500)
-		log.Print("upgrade:", err)
-		return
-	}
+        log.Print("upgrade:", err)
+        return
+    }
     defer c.Close()
 
     log.Printf("Opening a proxy for '%s'", r.RemoteAddr)
@@ -102,14 +102,14 @@ func telnetProxy(w http.ResponseWriter, r *http.Request) {
 
 func main() {
     flag.Parse()
-	log.SetFlags(0)
+    log.SetFlags(0)
 
-	http.HandleFunc("/", telnetProxy)
-	err := http.ListenAndServe(*addr, nil)
+    http.HandleFunc("/", telnetProxy)
+    err := http.ListenAndServe(*addr, nil)
     // Use this instead if you want to do SSL. You'll need to use `openssl`
     // to generate "cert.pem" and "key.pem" files.
-    // 	err := http.ListenAndServeTLS(*addr, "cert.pem", "key.pem", nil)
-	if err != nil {
-		log.Fatal("ListenAndServe: ", err)
-	}
+    // err := http.ListenAndServeTLS(*addr, "cert.pem", "key.pem", nil)
+    if err != nil {
+        log.Fatal("ListenAndServe: ", err)
+    }
 }
