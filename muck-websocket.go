@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/tls"
 	"flag"
 	"log"
 	"net"
@@ -15,13 +16,23 @@ import (
 var addr = flag.String("addr", "localhost:8000", "http service address")
 var muckHost = flag.String("muck", "localhost:4021",
 	"host and port for proxied muck")
+var useTLS = flag.Bool("muck-ssl", false,
+	"whether to connect to the muck with SSL.")
 
 var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool { return true },
 }
 
 func openTelnet() (t *telnet.Telnet, err error) {
-	conn, err := net.Dial("tcp", *muckHost)
+	var conn net.Conn
+
+	if *useTLS {
+		conn, err = tls.Dial("tcp", *muckHost, &tls.Config{
+			InsecureSkipVerify: true,
+		})
+	} else {
+		conn, err = net.Dial("tcp", *muckHost)
+	}
 	if err != nil {
 		return nil, err
 	}
