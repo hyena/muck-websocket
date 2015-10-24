@@ -1,0 +1,85 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>RatChat</title>
+
+    <!-- Get some nice monospace fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Inconsolata:400,700|Anonymous+Pro:400,700' rel='stylesheet' type='text/css'>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+    <!-- Solarized color Theme for bootstrap from https://github.com/aalpern/bootstrap-solarized -->
+    <link rel="stylesheet" href="bootstrap-solarized-dark.css">
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <!-- Load logic for connecting and talking. -->
+    <script src="ansi_up.js"></script>
+    <script src="ratchat.js"></script>
+
+    <!-- Less ugly scrollbars. -->
+    <style>
+
+    #chathistory::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+    #chathistory::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,0.3);
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+    }
+
+    #chathistory::-webkit-scrollbar-thumb {
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        background: rgb(0,43,54);
+        -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,0.5);
+    }
+    #chathistory::-webkit-scrollbar-thumb:window-inactive {
+	       background: rgb(0,43,54);
+    }
+
+    </style>
+  </head>
+
+  <body>
+    <div class="panel-body col-lg-offset-3 col-lg-6">
+      <h1>RatChat &#128045;</h1>
+      <div class="row-fluid">
+        <div class="span12 well">
+            <div id="chathistory" style="min-height:480px; max-height:480px; overflow:auto; white-space: pre-wrap;">
+                <!-- Messages will be inserted here. -->
+            </div>
+        </div>
+      </div>
+      <div>
+        <textarea id="textbox" class="form-control" rows=2></textarea>
+      </div>
+    </div>
+  </body>
+  <!--
+  Curious, are we?
+  Curiosty killed the cat... curiosity fed the rat.
+      (\_/)
+      (d b)
+      /\./\
+     ( )"( )
+     /\| |/\   )
+    (  " "  ) /
+     \ /~\ /\(_
+      \| |/  \_)
+      "   "
+  -->
+</html>
