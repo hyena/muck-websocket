@@ -6,6 +6,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"strings"
 	"sync"
 
 	"github.com/Cristofori/kmud/telnet"
@@ -18,6 +19,12 @@ var muckHost = flag.String("muck", "localhost:4021",
 	"host and port for proxied muck")
 var useTLS = flag.Bool("muck-ssl", false,
 	"whether to connect to the muck with SSL.")
+
+// Telnet commands
+const FORWARDED = 113 // The new telnet option constant.
+var willForwardCmd = telnet.BuildCommand(telnet.WILL, FORWARDED)
+var beginForwardCmd = telnet.BuildCommand(telnet.SB, FORWARDED)
+var endForwardCmd = telnet.BuildCommand(telnet.SE)
 
 var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool { return true },
@@ -65,7 +72,18 @@ func telnetProxy(w http.ResponseWriter, r *http.Request) {
 	}
 	defer t.Close()
 
-	// TODO: Handle Telnet codes and send across the ip to FB.
+	// Send over codes containing the user's real ip.
+	// 1. Indicate our intention.
+	t.SendCommand(telnet.WILL)
+	t.Write([]byte{FORWARDED})
+	// TODO: Use a listener function to confirm whether or not the server supports forwarding.
+	// 2. Negotiate the start of the suboption transmission.
+	t.SendCommand(telnet.SB)
+	t.Write([]byte{FORWARDED})
+	// 3. Send our new hostname.
+	t.Write([]byte(strings.Split(r.RemoteAddr, ":")[0]))
+	// 4. Indicate that we are done sending.
+	t.SendCommand(telnet.SE)
 	log.Printf("Connection open for '%s'. Proxying.", r.RemoteAddr)
 
 	var wg sync.WaitGroup

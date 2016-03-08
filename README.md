@@ -16,6 +16,5 @@ The host and port of the proxied muck can be specified with the `muck` flag.
 
 TODO
 ====
- * Use telnet codes to pass along the ip of the client.
  * Session management/reconnects
  * Impose real origin checks.
